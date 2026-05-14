@@ -1,0 +1,27 @@
+# Secrets
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+
+# Model files (too large for git)
+*.pt
+*.onnx
+
+# Output
+wrap_all_model_onnx_export/
+*.xlsx
+
+# Large binary files
+*.mp4
+*.pptx
+
+# Claude Code local settings
+.claude/
+
+# Misc
+*.html
+.DS_Store

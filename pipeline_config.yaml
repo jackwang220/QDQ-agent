@@ -1,0 +1,67 @@
+# QDQ Pipeline Configuration
+# 每次換模型只需改這裡，不用動任何 code
+
+model:
+  weights: "./best.pt"
+  img_size: 640          # 單一數字會自動展開成 [640, 640]
+  detect_layer: null      # IDetect layer index，不確定時留 null 讓 agent 推斷
+  input_bias: -0.5       # 輸入偏移，設 0.0 表示不加
+
+paths:
+  code_dir: "./code"
+  yolov7_dir: "C:/Users/User/nycu/yolov7"   # YOLOv7 repo root (needed for Step 2)
+  model_txt: "./model.txt"
+  output_dir: "./wrap_all_model_onnx_export"
+  excel_output: "./model_fl_values_fixed.xlsx"
+
+# 各 step 的中間檔名（不需要改，自動接龍）
+intermediate:
+  raw_onnx: "wrap_all_best_temp.onnx"
+  int8_onnx: "int8_converted_model.onnx"
+  qdq_onnx: "wrap_all_temp.onnx"
+  implicit_onnx: "output_topo.onnx"
+  final_onnx: "model_bias_topo.onnx"
+
+# modify_model_topo.py 的設定（最多 hardcode 的地方）
+postprocess:
+  # 要補插 Q/DQ 的節點（前面 step 漏掉的）
+  extra_qdq_nodes:
+    - name: "/model.51/Concat"
+      fl: 4.0
+    - name: "/model.51/Concat_1"
+      fl: 4.0
+    - name: "/model.53/Resize"
+      fl: 4.0
+    - name: "/model.65/Resize"
+      fl: 4.0
+    - name: "/model.102/act/LeakyRelu"
+      fl: 3.0
+    - name: "/model.103/act/LeakyRelu"
+      fl: 3.0
+    - name: "/model.104/act/LeakyRelu"
+      fl: 3.0
+
+  # 輸出端加 Transpose 的設定
+  transpose_configs:
+    - target_node: "implicit_output_dequant_105_im0_mul"
+      perm: [0, 2, 3, 1]
+      output_name: "transposed_output_0"
+    - target_node: "implicit_output_dequant_105_im1_mul"
+      perm: [0, 2, 3, 1]
+      output_name: "transposed_output_1"
+    - target_node: "implicit_output_dequant_105_im2_mul"
+      perm: [0, 2, 3, 1]
+      output_name: "transposed_output_2"
+
+  # 要移除的多餘輸出與節點
+  outputs_to_remove:
+    - "455"
+    - "469"
+    - "output"
+  nodes_to_remove:
+    - "/model.105/Reshape_2"
+    - "/model.105/Transpose_2"
+    - "/model.105/Transpose"
+    - "/model.105/Reshape"
+    - "/model.105/Reshape_1"
+    - "/model.105/Transpose_1"

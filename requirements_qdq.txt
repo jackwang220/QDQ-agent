@@ -1,0 +1,10 @@
+# QDQ pipeline script dependencies (install on the Linux/GPU server)
+torch>=2.0.0
+torchvision
+onnx
+onnxruntime
+onnxsim
+pandas
+openpyxl
+numpy
+PyYAML>=6.0

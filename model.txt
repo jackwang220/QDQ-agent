@@ -1,0 +1,1564 @@
+QuantModel(
+  /data1/wwc857/miniforge3/envs/py39/project/yolov7/quant_model_v7_revised.py , a_bw = 8 , w_bw = 8 , b_bw = 8 , act_disabled = False , is_fused = True , wrap_all = True
+  QuantConfig: {'layer_index_not_to_quantize': [], 'layer_index_keep_8_bits': [0, 92, 93, 94], 'layer_name_not_to_wrap': [], 'layer_index_quantize_output': [92, 93, 94], 'act_quantizer': <class 'quant_model_v7_revised.DFPQuantizer'>, 'wei_quantizer': <class 'quant_model_v7_revised.DFPQuantizer'>, 'bias_quantizer': <class 'quant_model_v7_revised.DFPQuantizer'>}
+  (module): Model(
+    (model): Sequential(
+      (0): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (input_quantizer): DFPQuantizer(bw = 8 , fl = 8 , abs_max = 0.5 , disable_act = False , freeze_fl = True)
+          (module_to_wrap): Conv2d(3, 24, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 17.3125 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 5.55078125 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 3.609375 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(24, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 15.6640625 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (1): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(24, 40, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 56.4375 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 7 , abs_max = 0.97021484375 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 7.13671875 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(40, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 47.8125 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (2): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(40, 40, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 82.6875 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 8 , abs_max = 0.44091796875 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 5.17578125 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(40, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 63.5 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (3): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(40, 72, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 79.9375 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.2408447265625 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 6 , abs_max = 2.6015625 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(72, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 64.3125 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (4): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(72, 40, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 89.5625 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 8 , abs_max = 0.50244140625 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 3.546875 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(40, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 77.125 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (5): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(72, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 72.5 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 8 , abs_max = 0.4365234375 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 2.8515625 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(32, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 62.71875 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (6): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(32, 40, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 54.125 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.2054443359375 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 6 , abs_max = 2.322265625 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(40, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 49.53125 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (7): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(40, 40, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 46.46875 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 10 , abs_max = 0.1751708984375 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 6 , abs_max = 2.669921875 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(40, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 37.75 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (8): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(40, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 37.71875 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.1796875 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 6 , abs_max = 2.455078125 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(32, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 30.234375 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (9): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(32, 40, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 34.21875 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.240966796875 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 6 , abs_max = 2.70703125 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(40, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 22.921875 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (10): BaseLayerWrapper(
+        (module_to_wrap): Concat()
+        (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 77.125 , disable_act = False , freeze_fl = True)
+      )
+      (11): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(152, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 82.75 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.34130859375 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 3.439453125 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(128, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 63.40625 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (12): MP(
+        (m): BaseLayerWrapper(
+          (module_to_wrap): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 63.1875 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (13): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 53.71875 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.251708984375 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.99609375 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(64, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 49.96875 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (14): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(128, 72, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 71.0 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.3203125 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 3.36328125 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(72, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 62.8125 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (15): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(72, 80, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 61.6875 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 10 , abs_max = 0.1456298828125 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 2.99609375 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(80, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 59.65625 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (16): BaseLayerWrapper(
+        (module_to_wrap): Concat()
+        (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 59.6875 , disable_act = False , freeze_fl = True)
+      )
+      (17): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(144, 72, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 59.71875 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 8 , abs_max = 0.36279296875 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 6 , abs_max = 2.6328125 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(72, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 58.1875 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (18): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(144, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 53.46875 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.30810546875 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 3.134765625 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(64, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 53.1875 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (19): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(64, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 38.875 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 10 , abs_max = 0.1436767578125 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 3.228515625 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(72, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 31.5 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (20): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(72, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 28.28125 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 10 , abs_max = 0.17333984375 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 3.12109375 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(72, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 23.703125 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (21): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(72, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 24.359375 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 10 , abs_max = 0.1668701171875 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 3.1953125 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(72, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 22.890625 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (22): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(72, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 20.0625 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 10 , abs_max = 0.1290283203125 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 3.275390625 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(72, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 16.390625 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (23): BaseLayerWrapper(
+        (module_to_wrap): Concat()
+        (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 58.625 , disable_act = False , freeze_fl = True)
+      )
+      (24): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(280, 288, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 52.28125 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.304443359375 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.19140625 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(288, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 48.15625 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (25): MP(
+        (m): BaseLayerWrapper(
+          (module_to_wrap): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 48.09375 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (26): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(288, 152, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 45.125 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.219482421875 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.046875 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(152, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 40.34375 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (27): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(288, 144, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 50.34375 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.2724609375 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 3.322265625 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(144, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 45.9375 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (28): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(144, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 34.8125 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 10 , abs_max = 0.10528564453125 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 3.90625 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(128, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 30.015625 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (29): BaseLayerWrapper(
+        (module_to_wrap): Concat()
+        (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 40.15625 , disable_act = False , freeze_fl = True)
+      )
+      (30): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(280, 152, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 41.90625 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.27685546875 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.1484375 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(152, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 32.96875 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (31): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(280, 144, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 37.375 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.213134765625 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.0234375 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(144, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 31.515625 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (32): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(144, 152, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 27.59375 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 10 , abs_max = 0.11212158203125 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 3.763671875 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(152, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 26.3125 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (33): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(152, 152, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 24.0625 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 10 , abs_max = 0.11102294921875 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 3.7421875 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(152, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 22.140625 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (34): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(152, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 20.59375 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 10 , abs_max = 0.10015869140625 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 3.669921875 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(128, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 16.625 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (35): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(128, 144, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 21.421875 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 10 , abs_max = 0.1273193359375 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 3.70703125 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(144, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 17.40625 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (36): BaseLayerWrapper(
+        (module_to_wrap): Concat()
+        (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 32.53125 , disable_act = False , freeze_fl = True)
+      )
+      (37): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(592, 584, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 35.84375 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.213134765625 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.875 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(584, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 31.421875 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (38): MP(
+        (m): BaseLayerWrapper(
+          (module_to_wrap): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 31.421875 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (39): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(584, 288, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 27.421875 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 10 , abs_max = 0.1578369140625 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.7421875 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(288, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 27.03125 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (40): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(584, 296, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 30.40625 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 10 , abs_max = 0.1634521484375 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.42578125 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(296, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 28.671875 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (41): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(296, 280, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 17.75 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 11 , abs_max = 0.086669921875 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 3.59765625 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(280, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 15.3671875 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (42): BaseLayerWrapper(
+        (module_to_wrap): Concat()
+        (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 27.015625 , disable_act = False , freeze_fl = True)
+      )
+      (43): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(568, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 23.28125 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.1943359375 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 3.23828125 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(128, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 19.328125 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (44): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(568, 136, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 22.84375 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 10 , abs_max = 0.1455078125 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 2.884765625 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(136, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 19.9375 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (45): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(136, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 14.0390625 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 10 , abs_max = 0.11737060546875 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 2.90234375 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(128, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 13.6328125 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (46): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(128, 144, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 13.03125 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 10 , abs_max = 0.10504150390625 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 3.041015625 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(144, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 12.6328125 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (47): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(144, 136, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 11.5234375 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 10 , abs_max = 0.11553955078125 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 3.310546875 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(136, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 10.546875 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (48): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(136, 136, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 11.421875 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 10 , abs_max = 0.1319580078125 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.578125 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(136, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 9.53125 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (49): BaseLayerWrapper(
+        (module_to_wrap): Concat()
+        (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 18.890625 , disable_act = False , freeze_fl = True)
+      )
+      (50): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(544, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 18.03125 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.2171630859375 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.6953125 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(1024, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 15.375 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (51): SPPCSPC(
+        (cv1): Conv(
+          (conv): ConvLinearLayerWrapper_Fused(
+            freeze_bn_stat = True
+            (module_to_wrap): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 16.1875 , disable_act = False , freeze_fl = True)
+            (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.174560546875 , disable_act = False , freeze_fl = True)
+            (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 3.49609375 , disable_act = False , freeze_fl = True)
+            (bn_layer): BatchNorm2d(256, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+          )
+          (bn): Identity()
+          (act): BaseLayerWrapper(
+            (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+            (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 15.34375 , disable_act = False , freeze_fl = True)
+          )
+        )
+        (cv2): Conv(
+          (conv): ConvLinearLayerWrapper_Fused(
+            freeze_bn_stat = True
+            (module_to_wrap): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 14.28125 , disable_act = False , freeze_fl = True)
+            (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.2109375 , disable_act = False , freeze_fl = True)
+            (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.390625 , disable_act = False , freeze_fl = True)
+            (bn_layer): BatchNorm2d(256, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+          )
+          (bn): Identity()
+          (act): BaseLayerWrapper(
+            (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+            (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 11.2890625 , disable_act = False , freeze_fl = True)
+          )
+        )
+        (cv3): Conv(
+          (conv): ConvLinearLayerWrapper_Fused(
+            freeze_bn_stat = True
+            (module_to_wrap): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 10.9921875 , disable_act = False , freeze_fl = True)
+            (weight_quantizer): DFPQuantizer(bw = 8 , fl = 10 , abs_max = 0.1397705078125 , disable_act = False , freeze_fl = True)
+            (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 3.12890625 , disable_act = False , freeze_fl = True)
+            (bn_layer): BatchNorm2d(256, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+          )
+          (bn): Identity()
+          (act): BaseLayerWrapper(
+            (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+            (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 9.6640625 , disable_act = False , freeze_fl = True)
+          )
+        )
+        (cv4): Conv(
+          (conv): ConvLinearLayerWrapper_Fused(
+            freeze_bn_stat = True
+            (module_to_wrap): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 12.5546875 , disable_act = False , freeze_fl = True)
+            (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.27685546875 , disable_act = False , freeze_fl = True)
+            (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.18359375 , disable_act = False , freeze_fl = True)
+            (bn_layer): BatchNorm2d(256, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+          )
+          (bn): Identity()
+          (act): BaseLayerWrapper(
+            (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+            (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 12.359375 , disable_act = False , freeze_fl = True)
+          )
+        )
+        (m): ModuleList(
+          (0): BaseLayerWrapper(
+            (module_to_wrap): MaxPool2d(kernel_size=5, stride=1, padding=2, dilation=1, ceil_mode=False)
+            (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 12.3515625 , disable_act = False , freeze_fl = True)
+          )
+          (1): BaseLayerWrapper(
+            (module_to_wrap): MaxPool2d(kernel_size=9, stride=1, padding=4, dilation=1, ceil_mode=False)
+            (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 12.3515625 , disable_act = False , freeze_fl = True)
+          )
+          (2): BaseLayerWrapper(
+            (module_to_wrap): MaxPool2d(kernel_size=13, stride=1, padding=6, dilation=1, ceil_mode=False)
+            (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 12.3515625 , disable_act = False , freeze_fl = True)
+          )
+        )
+        (cv5): Conv(
+          (conv): ConvLinearLayerWrapper_Fused(
+            freeze_bn_stat = True
+            (module_to_wrap): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 10.875 , disable_act = False , freeze_fl = True)
+            (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.20556640625 , disable_act = False , freeze_fl = True)
+            (bias_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 5.8203125 , disable_act = False , freeze_fl = True)
+            (bn_layer): BatchNorm2d(256, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+          )
+          (bn): Identity()
+          (act): BaseLayerWrapper(
+            (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+            (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 8.4375 , disable_act = False , freeze_fl = True)
+          )
+        )
+        (cv6): Conv(
+          (conv): ConvLinearLayerWrapper_Fused(
+            freeze_bn_stat = True
+            (module_to_wrap): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 9.9140625 , disable_act = False , freeze_fl = True)
+            (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.2025146484375 , disable_act = False , freeze_fl = True)
+            (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.2421875 , disable_act = False , freeze_fl = True)
+            (bn_layer): BatchNorm2d(256, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+          )
+          (bn): Identity()
+          (act): BaseLayerWrapper(
+            (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+            (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 7.8828125 , disable_act = False , freeze_fl = True)
+          )
+        )
+        (cv7): Conv(
+          (conv): ConvLinearLayerWrapper_Fused(
+            freeze_bn_stat = True
+            (module_to_wrap): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 9.609375 , disable_act = False , freeze_fl = True)
+            (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.31396484375 , disable_act = False , freeze_fl = True)
+            (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.60546875 , disable_act = False , freeze_fl = True)
+            (bn_layer): BatchNorm2d(256, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+          )
+          (bn): Identity()
+          (act): BaseLayerWrapper(
+            (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+            (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 7.9140625 , disable_act = False , freeze_fl = True)
+          )
+        )
+      )
+      (52): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(256, 136, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 9.9453125 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 8 , abs_max = 0.432373046875 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.18359375 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(136, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 8.1796875 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (53): BaseLayerWrapper(
+        (module_to_wrap): Upsample(scale_factor=2.0, mode='nearest')
+        (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 8.15625 , disable_act = False , freeze_fl = True)
+      )
+      (54): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(584, 136, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 33.25 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.1705322265625 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 3.244140625 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(136, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 22.953125 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (55): BaseLayerWrapper(
+        (module_to_wrap): Concat()
+        (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 20.65625 , disable_act = False , freeze_fl = True)
+      )
+      (56): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(272, 136, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 17.265625 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 8 , abs_max = 0.434814453125 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.34375 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(136, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 14.6328125 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (57): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(272, 136, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 16.53125 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.31396484375 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.91796875 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(136, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 14.78125 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (58): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(136, 80, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 12.765625 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 10 , abs_max = 0.1456298828125 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.1328125 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(80, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 11.9453125 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (59): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(80, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 12.3203125 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.20361328125 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.23046875 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(64, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 11.21875 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (60): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(64, 80, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 13.625 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.25 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.55078125 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(80, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 12.9453125 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (61): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(80, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 14.109375 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.337158203125 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 5.72265625 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(72, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 13.2421875 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (62): BaseLayerWrapper(
+        (module_to_wrap): Concat()
+        (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 15.421875 , disable_act = False , freeze_fl = True)
+      )
+      (63): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(568, 144, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 15.125 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.33154296875 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.47265625 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(144, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 13.296875 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (64): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(144, 72, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 16.78125 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 8 , abs_max = 0.50341796875 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.0 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(72, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 15.1875 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (65): BaseLayerWrapper(
+        (module_to_wrap): Upsample(scale_factor=2.0, mode='nearest')
+        (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 15.1875 , disable_act = False , freeze_fl = True)
+      )
+      (66): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(288, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 51.90625 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.290283203125 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 3.7578125 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(64, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 35.59375 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (67): BaseLayerWrapper(
+        (module_to_wrap): Concat()
+        (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 31.4375 , disable_act = False , freeze_fl = True)
+      )
+      (68): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(136, 72, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 25.484375 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 8 , abs_max = 0.5478515625 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.69921875 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(72, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 21.265625 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (69): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(136, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 26.234375 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 7 , abs_max = 0.7568359375 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 3.298828125 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(64, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 21.171875 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (70): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(64, 40, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 22.5625 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.318603515625 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 3.53515625 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(40, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 18.390625 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (71): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(40, 40, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 21.96875 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 8 , abs_max = 0.397705078125 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.7890625 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(40, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 17.21875 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (72): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(40, 40, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 20.546875 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 8 , abs_max = 0.52099609375 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 5.18359375 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(40, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 15.8515625 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (73): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(40, 40, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 23.765625 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 8 , abs_max = 0.4833984375 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 5.57421875 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(40, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 20.375 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (74): BaseLayerWrapper(
+        (module_to_wrap): Concat()
+        (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 18.515625 , disable_act = False , freeze_fl = True)
+      )
+      (75): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(296, 72, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 27.375 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 8 , abs_max = 0.49853515625 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.12890625 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(72, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 20.40625 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (76): MP(
+        (m): BaseLayerWrapper(
+          (module_to_wrap): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 16.046875 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (77): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(72, 72, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 17.484375 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 8 , abs_max = 0.461181640625 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.203125 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(72, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 15.8125 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (78): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(72, 72, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 20.140625 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 7 , abs_max = 0.70947265625 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.09375 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(72, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 15.875 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (79): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(72, 72, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 18.953125 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.299072265625 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.42578125 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(72, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 15.890625 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (80): BaseLayerWrapper(
+        (module_to_wrap): Concat()
+        (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 15.890625 , disable_act = False , freeze_fl = True)
+      )
+      (81): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(288, 144, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 16.515625 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 8 , abs_max = 0.420166015625 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.17578125 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(144, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 14.78125 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (82): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(288, 136, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 18.015625 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 8 , abs_max = 0.548828125 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 5.70703125 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(136, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 15.765625 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (83): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(136, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 16.8125 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 8 , abs_max = 0.3662109375 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 3.84375 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(72, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 14.765625 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (84): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(72, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 17.765625 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 8 , abs_max = 0.470458984375 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.50390625 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(72, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 15.21875 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (85): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(72, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 17.515625 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.316650390625 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.328125 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(72, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 15.2421875 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (86): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(72, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 21.515625 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 8 , abs_max = 0.63134765625 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 5.6171875 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(72, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 17.6875 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (87): BaseLayerWrapper(
+        (module_to_wrap): Concat()
+        (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 17.46875 , disable_act = False , freeze_fl = True)
+      )
+      (88): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(568, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 22.390625 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 8 , abs_max = 0.475830078125 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.8671875 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(128, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 16.875 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (89): MP(
+        (m): BaseLayerWrapper(
+          (module_to_wrap): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 15.90625 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (90): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(128, 136, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 13.4296875 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 8 , abs_max = 0.427001953125 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 6.38671875 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(136, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 12.578125 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (91): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 17.71875 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 8 , abs_max = 0.60400390625 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.44921875 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(128, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 15.578125 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (92): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(128, 152, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 16.859375 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.1937255859375 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.1015625 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(152, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 15.53125 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (93): BaseLayerWrapper(
+        (module_to_wrap): Concat()
+        (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 15.5625 , disable_act = False , freeze_fl = True)
+      )
+      (94): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(544, 288, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 13.703125 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.34130859375 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.92578125 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(288, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 13.015625 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (95): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(544, 288, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 17.578125 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 7 , abs_max = 0.7744140625 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 5.6328125 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(288, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 15.546875 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (96): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(288, 144, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 12.1953125 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.22119140625 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 5.67578125 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(144, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 11.2578125 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (97): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(144, 144, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 13.1796875 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.27392578125 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 5.17578125 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(144, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 11.3046875 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (98): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(144, 136, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 13.71875 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 9 , abs_max = 0.280517578125 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 5.17578125 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(136, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 12.46875 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (99): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(136, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 16.21875 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 8 , abs_max = 0.374267578125 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 4.09375 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(128, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 14.3203125 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (100): BaseLayerWrapper(
+        (module_to_wrap): Concat()
+        (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 16.734375 , disable_act = False , freeze_fl = True)
+      )
+      (101): Conv(
+        (conv): ConvLinearLayerWrapper_Fused(
+          freeze_bn_stat = True
+          (module_to_wrap): Conv2d(1128, 296, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 13.9921875 , disable_act = False , freeze_fl = True)
+          (weight_quantizer): DFPQuantizer(bw = 8 , fl = 8 , abs_max = 0.386962890625 , disable_act = False , freeze_fl = True)
+          (bias_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 5.97265625 , disable_act = False , freeze_fl = True)
+          (bn_layer): BatchNorm2d(296, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        )
+        (bn): Identity()
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 13.234375 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (102): RepConvWrapper(
+        (module_to_wrap): RepConv(
+          (act): LeakyReLU(negative_slope=0.01, inplace=True)
+          (rbr_dense): Sequential(
+            (0): ConvLinearLayerWrapper_Fused(
+              freeze_bn_stat = True
+              (module_to_wrap): Conv2d(72, 136, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 37.09375 , disable_act = False , freeze_fl = True)
+              (weight_quantizer): DFPQuantizer(bw = 8 , fl = 8 , abs_max = 0.59716796875 , disable_act = False , freeze_fl = True)
+              (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 5.109375 , disable_act = False , freeze_fl = True)
+              (bn_layer): BatchNorm2d(136, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+            )
+            (1): Identity()
+          )
+          (rbr_1x1): Sequential(
+            (0): ConvLinearLayerWrapper_Fused(
+              freeze_bn_stat = True
+              (module_to_wrap): Conv2d(72, 136, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 20.84375 , disable_act = False , freeze_fl = True)
+              (weight_quantizer): DFPQuantizer(bw = 8 , fl = 7 , abs_max = 1.1728515625 , disable_act = False , freeze_fl = True)
+              (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 5.22265625 , disable_act = False , freeze_fl = True)
+              (bn_layer): BatchNorm2d(136, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+            )
+            (1): Identity()
+          )
+        )
+        (add_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 45.125 , disable_act = False , freeze_fl = False)
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 24.734375 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (103): RepConvWrapper(
+        (module_to_wrap): RepConv(
+          (act): LeakyReLU(negative_slope=0.01, inplace=True)
+          (rbr_dense): Sequential(
+            (0): ConvLinearLayerWrapper_Fused(
+              freeze_bn_stat = True
+              (module_to_wrap): Conv2d(128, 296, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 26.5 , disable_act = False , freeze_fl = True)
+              (weight_quantizer): DFPQuantizer(bw = 8 , fl = 8 , abs_max = 0.546875 , disable_act = False , freeze_fl = True)
+              (bias_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 6.4375 , disable_act = False , freeze_fl = True)
+              (bn_layer): BatchNorm2d(296, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+            )
+            (1): Identity()
+          )
+          (rbr_1x1): Sequential(
+            (0): ConvLinearLayerWrapper_Fused(
+              freeze_bn_stat = True
+              (module_to_wrap): Conv2d(128, 296, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 20.34375 , disable_act = False , freeze_fl = True)
+              (weight_quantizer): DFPQuantizer(bw = 8 , fl = 7 , abs_max = 0.9287109375 , disable_act = False , freeze_fl = True)
+              (bias_quantizer): DFPQuantizer(bw = 8 , fl = 5 , abs_max = 5.296875 , disable_act = False , freeze_fl = True)
+              (bn_layer): BatchNorm2d(296, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+            )
+            (1): Identity()
+          )
+        )
+        (add_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 23.96875 , disable_act = False , freeze_fl = False)
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 27.53125 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (104): RepConvWrapper(
+        (module_to_wrap): RepConv(
+          (act): LeakyReLU(negative_slope=0.01, inplace=True)
+          (rbr_dense): Sequential(
+            (0): ConvLinearLayerWrapper_Fused(
+              freeze_bn_stat = True
+              (module_to_wrap): Conv2d(296, 504, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 16.953125 , disable_act = False , freeze_fl = True)
+              (weight_quantizer): DFPQuantizer(bw = 8 , fl = 8 , abs_max = 0.5029296875 , disable_act = False , freeze_fl = True)
+              (bias_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 5.96484375 , disable_act = False , freeze_fl = True)
+              (bn_layer): BatchNorm2d(504, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+            )
+            (1): Identity()
+          )
+          (rbr_1x1): Sequential(
+            (0): ConvLinearLayerWrapper_Fused(
+              freeze_bn_stat = True
+              (module_to_wrap): Conv2d(296, 504, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 13.2890625 , disable_act = False , freeze_fl = True)
+              (weight_quantizer): DFPQuantizer(bw = 8 , fl = 7 , abs_max = 0.8447265625 , disable_act = False , freeze_fl = True)
+              (bias_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 6.078125 , disable_act = False , freeze_fl = True)
+              (bn_layer): BatchNorm2d(504, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+            )
+            (1): Identity()
+          )
+        )
+        (add_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 15.875 , disable_act = False , freeze_fl = False)
+        (act): BaseLayerWrapper(
+          (module_to_wrap): LeakyReLU(negative_slope=0.01, inplace=True)
+          (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 20.765625 , disable_act = False , freeze_fl = True)
+        )
+      )
+      (105): IDetect(
+        (m): ModuleList(
+          (0): ConvLinearLayerWrapper(
+            (module_to_wrap): Conv2d(136, 30, kernel_size=(1, 1), stride=(1, 1))
+            (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 34.625 , disable_act = False , freeze_fl = True)
+            (weight_quantizer): DFPQuantizer(bw = 8 , fl = 6 , abs_max = 1.4326171875 , disable_act = False , freeze_fl = True)
+            (bias_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 7.21484375 , disable_act = False , freeze_fl = True)
+          )
+          (1): ConvLinearLayerWrapper(
+            (module_to_wrap): Conv2d(296, 30, kernel_size=(1, 1), stride=(1, 1))
+            (output_quantizer): DFPQuantizer(bw = 8 , fl = 1 , abs_max = 67.0 , disable_act = False , freeze_fl = True)
+            (weight_quantizer): DFPQuantizer(bw = 8 , fl = 6 , abs_max = 1.71875 , disable_act = False , freeze_fl = True)
+            (bias_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 7.03515625 , disable_act = False , freeze_fl = True)
+          )
+          (2): ConvLinearLayerWrapper(
+            (module_to_wrap): Conv2d(504, 30, kernel_size=(1, 1), stride=(1, 1))
+            (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 38.9375 , disable_act = False , freeze_fl = True)
+            (weight_quantizer): DFPQuantizer(bw = 8 , fl = 6 , abs_max = 1.7734375 , disable_act = False , freeze_fl = True)
+            (bias_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 7.53515625 , disable_act = False , freeze_fl = True)
+          )
+        )
+        (ia): ModuleList(
+          (0): ImplicitAWrapper(
+            (module_to_wrap): ImplicitA()
+            (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 24.6875 , disable_act = False , freeze_fl = True)
+            (weight_quantizer): DFPQuantizer(bw = 8 , fl = 8 , abs_max = 0.37744140625 , disable_act = False , freeze_fl = True)
+          )
+          (1): ImplicitAWrapper(
+            (module_to_wrap): ImplicitA()
+            (output_quantizer): DFPQuantizer(bw = 8 , fl = 3 , abs_max = 27.453125 , disable_act = False , freeze_fl = True)
+            (weight_quantizer): DFPQuantizer(bw = 8 , fl = 8 , abs_max = 0.4248046875 , disable_act = False , freeze_fl = True)
+          )
+          (2): ImplicitAWrapper(
+            (module_to_wrap): ImplicitA()
+            (output_quantizer): DFPQuantizer(bw = 8 , fl = 4 , abs_max = 15.984375 , disable_act = False , freeze_fl = True)
+            (weight_quantizer): DFPQuantizer(bw = 8 , fl = 8 , abs_max = 0.5576171875 , disable_act = False , freeze_fl = True)
+          )
+        )
+        (im): ModuleList(
+          (0): ImplicitMWrapper(
+            (module_to_wrap): ImplicitM()
+            (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 35.0625 , disable_act = False , freeze_fl = True)
+            (weight_quantizer): DFPQuantizer(bw = 8 , fl = 6 , abs_max = 1.744140625 , disable_act = False , freeze_fl = True)
+          )
+          (1): ImplicitMWrapper(
+            (module_to_wrap): ImplicitM()
+            (output_quantizer): DFPQuantizer(bw = 8 , fl = 1 , abs_max = 92.25 , disable_act = False , freeze_fl = True)
+            (weight_quantizer): DFPQuantizer(bw = 8 , fl = 6 , abs_max = 2.060546875 , disable_act = False , freeze_fl = True)
+          )
+          (2): ImplicitMWrapper(
+            (module_to_wrap): ImplicitM()
+            (output_quantizer): DFPQuantizer(bw = 8 , fl = 2 , abs_max = 31.734375 , disable_act = False , freeze_fl = True)
+            (weight_quantizer): DFPQuantizer(bw = 8 , fl = 7 , abs_max = 1.392578125 , disable_act = False , freeze_fl = True)
+          )
+        )
+      )
+    )
+  )
