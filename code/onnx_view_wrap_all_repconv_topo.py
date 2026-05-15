@@ -19,8 +19,10 @@ import re
 import logging
 from onnx import helper, TensorProto
 
+# Defaults — overridden at runtime by CLI args from the agent
 SPPSCSPC_LR_LAYER = 51
 DETECTION_LAYER = 105
+REPCONV_LAYERS = REPCONV_LAYERS
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 logger = logging.getLogger(__name__)
@@ -31,6 +33,9 @@ def parse_arguments():
     parser.add_argument("--model_path", type=str, required=True, help="Path to the ONNX model file")
     parser.add_argument("--output_path", type=str, required=True, help="Path to save the modified ONNX model")
     parser.add_argument("--quant_info", type=str, required=True, help="Path to the Excel file with FL values")
+    parser.add_argument("--sppcspc-layer", type=int, default=None, help="SPPCSPC layer index (overrides default)")
+    parser.add_argument("--repconv-layers", type=str, default="", help="Comma-separated RepConv layer indices")
+    parser.add_argument("--detection-layer", type=int, default=None, help="Detection layer index (overrides default)")
     parser.add_argument("--verbose", "-v", action="store_true", help="Enable verbose logging")
     return parser.parse_args()
 
@@ -103,7 +108,7 @@ def load_fl_values(excel_path):
             combined_path = full_path + layer_name
             
             # Identify RepConv sub-modules for layers 102-104
-            if layer_num in [102, 103, 104]:
+            if layer_num in REPCONV_LAYERS:
                 # Look for rbr_dense or rbr_1x1 in the path/name
                 if 'rbr_dense' in combined_path.lower():
                     processed_df.at[i, 'sub_module'] = 'rbr_dense'
@@ -150,7 +155,7 @@ def load_fl_values(excel_path):
         logger.info(f"Sample data:\n{processed_df[['layer_number', 'quantizer_role', 'fl', 'sub_module']].head()}")
         
         # Count sub-modules for RepConv layers
-        repconv_sub_modules = processed_df[processed_df['layer_number'].isin([102, 103, 104])]['sub_module'].value_counts()
+        repconv_sub_modules = processed_df[processed_df['layer_number'].isin(REPCONV_LAYERS)]['sub_module'].value_counts()
         if not repconv_sub_modules.empty:
             logger.info(f"RepConv sub-module distribution: {repconv_sub_modules.to_dict()}")
         
@@ -205,7 +210,7 @@ def analyze_model_structure(model):
         is_layer_51 = node_info.get('layer_number') == SPPSCSPC_LR_LAYER
         
         # Identify RepConv layers (102-104)
-        is_repconv_layer = node_info.get('layer_number') in [102, 103, 104]
+        is_repconv_layer = node_info.get('layer_number') in REPCONV_LAYERS
         
         # Categorize nodes
         if node.op_type == 'Conv':
@@ -469,7 +474,7 @@ def map_fl_values_to_nodes(model_structure, fl_df):
         node_type = None
         
         # Special handling for RepConv layers (102-104)
-        if layer in [102, 103, 104]:
+        if layer in REPCONV_LAYERS:
             if sub_module == 'rbr_dense':
                 node_type = f"RepConv_Dense_{layer}"
             elif sub_module == 'rbr_1x1':
@@ -563,7 +568,7 @@ def map_fl_values_to_nodes(model_structure, fl_df):
         
         if layer_num is not None and layer_num in fl_lookup:
             # Special handling for RepConv layers (102-104)
-            if layer_num in [102, 103, 104]:
+            if layer_num in REPCONV_LAYERS:
                 # First try to match the exact node_type for RepConv components
                 if node_type in fl_lookup[layer_num]:
                     fl_values = fl_lookup[layer_num][node_type]
@@ -1292,10 +1297,22 @@ def add_quantization_nodes(model, mapped_nodes):
 
 def main():
     args = parse_arguments()
-    
+
+    # Override module-level constants if CLI args provided
+    global SPPSCSPC_LR_LAYER, DETECTION_LAYER, REPCONV_LAYERS
+    if args.sppcspc_layer is not None:
+        SPPSCSPC_LR_LAYER = args.sppcspc_layer
+        logger.info(f"SPPCSPC layer overridden to {SPPSCSPC_LR_LAYER}")
+    if args.detection_layer is not None:
+        DETECTION_LAYER = args.detection_layer
+        logger.info(f"Detection layer overridden to {DETECTION_LAYER}")
+    if args.repconv_layers:
+        REPCONV_LAYERS = [int(x.strip()) for x in args.repconv_layers.split(",") if x.strip()]
+        logger.info(f"RepConv layers overridden to {REPCONV_LAYERS}")
+
     if args.verbose:
         logger.setLevel(logging.DEBUG)
-    
+
     # Load ONNX model
     logger.info(f"Loading ONNX model from: {args.model_path}")
     try:

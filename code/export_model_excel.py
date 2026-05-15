@@ -19,12 +19,8 @@ import logging
 
 
 
-# v7 tiny 
-# CONCAT_LAYER = [6, 13, 20, 27, 34, 36, 41, 46, 51, 56, 59, 64, 67, 72]
-# MAXPOOL_LAYER = [8, 15, 22]
-# UPSAMPLE_LAYER = [39, 49]
-# v7 p70
-CONCAT_LAYER = [10, 16 ,23 ,29 ,36, 42, 49, 55, 62 ,67 ,74, 80, 87, 93, 100]
+# Defaults (v7 p70) — overridden at runtime by CLI args from the agent
+CONCAT_LAYER = [10, 16, 23, 29, 36, 42, 49, 55, 62, 67, 74, 80, 87, 93, 100]
 MAXPOOL_LAYER = [12, 25, 38, 76, 89]
 UPSAMPLE_LAYER = [53, 65]
 
@@ -293,21 +289,32 @@ def export_to_excel(df, output_file):
     
     print(f"Export complete: {output_file}")
 
+def _parse_int_list(s: str) -> list:
+    return [int(x.strip()) for x in s.split(",") if x.strip()]
+
+
 def main():
-    # Parse command line arguments
-    if len(sys.argv) < 2:
-        print(f"Usage: python {sys.argv[0]} <paste_txt_file> [output_excel_file]")
-        return
-    
-    paste_file = sys.argv[1]
-    
-    # Set default output file if not provided
-    if len(sys.argv) > 2:
-        output_file = sys.argv[2]
-    else:
-        base_name = os.path.splitext(paste_file)[0]
-        output_file = f"{base_name}_fl_values_fixed.xlsx"
-    
+    import argparse
+    parser = argparse.ArgumentParser(description="Extract FL values from model dump to Excel")
+    parser.add_argument("paste_file", help="Path to model.txt")
+    parser.add_argument("output_file", nargs="?", help="Output Excel path")
+    parser.add_argument("--concat-layers",  default="", help="Comma-separated Concat layer indices")
+    parser.add_argument("--maxpool-layers", default="", help="Comma-separated MaxPool layer indices")
+    parser.add_argument("--upsample-layers", default="", help="Comma-separated Upsample layer indices")
+    args = parser.parse_args()
+
+    # Override module-level constants if args provided
+    global CONCAT_LAYER, MAXPOOL_LAYER, UPSAMPLE_LAYER
+    if args.concat_layers:
+        CONCAT_LAYER = _parse_int_list(args.concat_layers)
+    if args.maxpool_layers:
+        MAXPOOL_LAYER = _parse_int_list(args.maxpool_layers)
+    if args.upsample_layers:
+        UPSAMPLE_LAYER = _parse_int_list(args.upsample_layers)
+
+    paste_file = args.paste_file
+    output_file = args.output_file or (os.path.splitext(paste_file)[0] + "_fl_values_fixed.xlsx")
+
     # Extract FL values
     df = extract_fl_values(paste_file)
     

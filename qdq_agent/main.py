@@ -119,8 +119,11 @@ def main():
         "excel_unknown_nodes": [],
         "detect_layer": None,
         "model_txt_content": "",
+        "layer_constants": {},
         "suggested_detect_layer": None,
         "suggested_patterns": [],
+        "suggested_extra_qdq": [],
+        "postprocess_config": {},
         "success": False,
     }
 

@@ -65,7 +65,17 @@ def run_step1_node(state: QDQState) -> dict:
     if not Path(model_txt).exists():
         return {"errors": [f"model_txt not found: {model_txt}"], "current_stage": "step1_failed"}
 
-    ok, stdout, stderr = _run([sys.executable, script, model_txt, excel_out])
+    # Build CLI args from inferred layer constants
+    constants = state.get("layer_constants") or {}
+    cmd = [sys.executable, script, model_txt, excel_out]
+    if constants.get("concat"):
+        cmd += ["--concat-layers", ",".join(map(str, constants["concat"]))]
+    if constants.get("maxpool"):
+        cmd += ["--maxpool-layers", ",".join(map(str, constants["maxpool"]))]
+    if constants.get("upsample"):
+        cmd += ["--upsample-layers", ",".join(map(str, constants["upsample"]))]
+
+    ok, stdout, stderr = _run(cmd)
 
     if not ok:
         return {"errors": [f"Step 1 failed: {stderr[-500:]}"], "current_stage": "step1_failed"}
@@ -154,12 +164,21 @@ def run_step4_node(state: QDQState) -> dict:
     if not Path(input_onnx).exists():
         return {"errors": [f"Step 4: input not found: {input_onnx}"], "current_stage": "step4_failed"}
 
-    ok, _, stderr = _run([
+    constants = state.get("layer_constants") or {}
+    cmd = [
         sys.executable, script,
         "--model_path", input_onnx,
         "--output_path", output_onnx,
         "--quant_info", excel,
-    ])
+    ]
+    if constants.get("sppcspc") is not None:
+        cmd += ["--sppcspc-layer", str(constants["sppcspc"])]
+    if constants.get("repconv"):
+        cmd += ["--repconv-layers", ",".join(map(str, constants["repconv"]))]
+    if state.get("detect_layer") is not None:
+        cmd += ["--detection-layer", str(state["detect_layer"])]
+
+    ok, _, stderr = _run(cmd)
     if not ok:
         return {"errors": [f"Step 4 failed: {stderr[-500:]}"], "current_stage": "step4_failed"}
 
@@ -205,7 +224,8 @@ def run_step6_node(state: QDQState) -> dict:
 
     input_onnx = state["implicit_onnx_path"]
     output_onnx = state["final_onnx_path"]
-    pp = cfg["postprocess"]
+    # Use auto-generated postprocess config if available, else fall back to yaml
+    pp = state.get("postprocess_config") or cfg.get("postprocess", {})
 
     print(f"  [Step 6] postprocess: {input_onnx} -> {output_onnx}")
 

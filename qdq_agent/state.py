@@ -24,15 +24,22 @@ class QDQState(TypedDict):
     final_onnx_path: str
 
     # ── Step 1 output ────────────────────────────────────────────────────────
-    excel_unknown_nodes: list[dict]   # [{layer, component, role_type, raw_line}]
+    excel_unknown_nodes: list[dict]
 
     # ── Detect layer ─────────────────────────────────────────────────────────
-    detect_layer: Optional[int]       # None = not yet determined
+    detect_layer: Optional[int]
     model_txt_content: str
+
+    # ── Layer structure (inferred from model.txt) ─────────────────────────────
+    layer_constants: dict  # {concat:[], maxpool:[], upsample:[], sppcspc:int|None, repconv:[]}
 
     # ── Agent suggestions (pre-HITL) ─────────────────────────────────────────
     suggested_detect_layer: Optional[int]
-    suggested_patterns: list[dict]    # [{node_name, suggested_pattern, reason}]
+    suggested_patterns: list[dict]
+    suggested_extra_qdq: list[dict]   # [{name, op_type, layer, fl, reason}]
+
+    # ── Auto-generated postprocess config ────────────────────────────────────
+    postprocess_config: dict          # {transpose_configs, outputs_to_remove, nodes_to_remove, extra_qdq_nodes}
 
     # ── Final ────────────────────────────────────────────────────────────────
     success: bool
