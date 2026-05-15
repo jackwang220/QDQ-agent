@@ -1,7 +1,4 @@
-"""Generate model.txt from a YOLOv7 QuantModel .pt checkpoint.
-
-Run from the yolov7 repo root so that model class definitions can be imported.
-"""
+"""Generate model.txt from a YOLOv7 QuantModel .pt checkpoint."""
 from __future__ import annotations
 
 import argparse
@@ -12,9 +9,14 @@ import torch
 
 def main():
     parser = argparse.ArgumentParser(description="Generate model.txt from .pt checkpoint")
-    parser.add_argument("--weights", required=True, help="Path to .pt checkpoint")
-    parser.add_argument("--output",  required=True, help="Path to write model.txt")
+    parser.add_argument("--weights",    required=True, help="Path to .pt checkpoint")
+    parser.add_argument("--output",     required=True, help="Path to write model.txt")
+    parser.add_argument("--yolov7-dir", default="",    help="YOLOv7 repo root to add to sys.path")
     args = parser.parse_args()
+
+    # torch.load unpickles model classes; they import from yolov7's `models/` package
+    if args.yolov7_dir:
+        sys.path.insert(0, args.yolov7_dir)
 
     print(f"  Loading checkpoint: {args.weights}")
     ckpt = torch.load(args.weights, map_location="cpu")

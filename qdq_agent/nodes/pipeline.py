@@ -78,9 +78,13 @@ def run_step0_node(state: QDQState) -> dict:
     print(f"  [Step 0] generate_model_txt: {weights} -> {model_txt}")
     Path(model_txt_abs).parent.mkdir(parents=True, exist_ok=True)
 
+    yolov7_abs = str(Path(yolov7_dir).resolve())
     ok, stdout, stderr = _run(
-        [sys.executable, script, "--weights", weights, "--output", model_txt_abs],
-        cwd=yolov7_dir,
+        [sys.executable, script,
+         "--weights", weights,
+         "--output", model_txt_abs,
+         "--yolov7-dir", yolov7_abs],
+        cwd=yolov7_abs,
     )
     if not ok:
         return {"errors": [f"Step 0 failed: {stderr[-500:]}"], "current_stage": "step0_failed"}
