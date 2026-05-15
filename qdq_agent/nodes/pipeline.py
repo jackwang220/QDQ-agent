@@ -32,9 +32,17 @@ def load_config_node(state: QDQState) -> dict:
 
     detect_layer = cfg["model"].get("detect_layer")  # may be None
 
+    # "auto" → derive model_txt path from weights stem inside output_dir
+    raw_model_txt = cfg["paths"].get("model_txt", "auto")
+    if raw_model_txt == "auto":
+        weights_stem = Path(cfg["model"]["weights"]).stem
+        model_txt_path = str(Path(output_dir) / f"{weights_stem}_model.txt")
+    else:
+        model_txt_path = raw_model_txt
+
     return {
         "config": cfg,
-        "model_txt_path": cfg["paths"]["model_txt"],
+        "model_txt_path": model_txt_path,
         "excel_path": cfg["paths"]["excel_output"],
         "raw_onnx_path": str(Path(output_dir) / inter["raw_onnx"]),
         "int8_onnx_path": str(Path(output_dir) / inter["int8_onnx"]),
@@ -49,6 +57,34 @@ def load_config_node(state: QDQState) -> dict:
         "success": False,
         "current_stage": "config_loaded",
     }
+
+
+# ── Step 0: generate_model_txt (auto, skipped if file already exists) ────────
+
+def run_step0_node(state: QDQState) -> dict:
+    model_txt = state["model_txt_path"]
+
+    if Path(model_txt).exists():
+        print(f"  [Step 0] model.txt already exists, skipping: {model_txt}")
+        return {"current_stage": "step0_skipped"}
+
+    cfg = state["config"]
+    code_dir = cfg["paths"]["code_dir"]
+    yolov7_dir = cfg["paths"].get("yolov7_dir", ".")
+    script = str(Path(code_dir) / "generate_model_txt.py")
+    weights = str(Path(cfg["model"]["weights"]).resolve())
+
+    print(f"  [Step 0] generate_model_txt: {weights} -> {model_txt}")
+    Path(model_txt).parent.mkdir(parents=True, exist_ok=True)
+
+    ok, stdout, stderr = _run(
+        [sys.executable, script, "--weights", weights, "--output", str(Path(model_txt).resolve())],
+        cwd=yolov7_dir,
+    )
+    if not ok:
+        return {"errors": [f"Step 0 failed: {stderr[-500:]}"], "current_stage": "step0_failed"}
+
+    return {"current_stage": "step0_done"}
 
 
 # ── Step 1: export_model_excel ───────────────────────────────────────────────

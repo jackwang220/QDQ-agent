@@ -6,6 +6,7 @@ from qdq_agent.llm import trace_node
 from qdq_agent.state import QDQState
 from qdq_agent.nodes.pipeline import (
     load_config_node,
+    run_step0_node,
     run_step1_node,
     run_step2_node,
     run_step3_node,
@@ -68,8 +69,9 @@ def build_graph() -> StateGraph:
     def add(name: str, fn):
         g.add_node(name, trace_node(name)(fn))
 
-    # ── Startup: load config + model.txt + infer layer constants ──────────────
+    # ── Startup: load config → generate model.txt (if needed) → load + infer ──
     add("load_config",           load_config_node)
+    add("run_step0",             run_step0_node)
     add("load_model_txt",        load_model_txt_node)
     add("infer_layer_constants", infer_layer_constants_node)
 
@@ -103,7 +105,12 @@ def build_graph() -> StateGraph:
 
     # Startup chain
     g.set_entry_point("load_config")
-    g.add_edge("load_config",           "load_model_txt")
+    g.add_edge("load_config",           "run_step0")
+    g.add_conditional_edges(
+        "run_step0",
+        lambda s: "error" if s.get("errors") else "continue",
+        {"continue": "load_model_txt", "error": "error"},
+    )
     g.add_edge("load_model_txt",        "infer_layer_constants")
     g.add_edge("infer_layer_constants", "run_step1")
 
