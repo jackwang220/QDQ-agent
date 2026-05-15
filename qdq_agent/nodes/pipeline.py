@@ -76,9 +76,6 @@ def run_step1_node(state: QDQState) -> dict:
         if "unknown" in line.lower() and "role_type" in line.lower():
             unknown_nodes.append({"raw_line": line.strip()})
 
-    # TEST: force unknown node to trigger agent flow (remove after testing)
-    unknown_nodes = [{"raw_line": "WARNING: unknown role_type for node /model.51/Add"}]
-
     return {
         "excel_unknown_nodes": unknown_nodes,
         "current_stage": "step1_done",
