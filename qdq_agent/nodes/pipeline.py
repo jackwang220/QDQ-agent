@@ -69,16 +69,17 @@ def run_step0_node(state: QDQState) -> dict:
         return {"current_stage": "step0_skipped"}
 
     cfg = state["config"]
-    code_dir = cfg["paths"]["code_dir"]
+    code_dir = str(Path(cfg["paths"]["code_dir"]).resolve())
     yolov7_dir = cfg["paths"].get("yolov7_dir", ".")
     script = str(Path(code_dir) / "generate_model_txt.py")
     weights = str(Path(cfg["model"]["weights"]).resolve())
+    model_txt_abs = str(Path(model_txt).resolve())
 
     print(f"  [Step 0] generate_model_txt: {weights} -> {model_txt}")
-    Path(model_txt).parent.mkdir(parents=True, exist_ok=True)
+    Path(model_txt_abs).parent.mkdir(parents=True, exist_ok=True)
 
     ok, stdout, stderr = _run(
-        [sys.executable, script, "--weights", weights, "--output", str(Path(model_txt).resolve())],
+        [sys.executable, script, "--weights", weights, "--output", model_txt_abs],
         cwd=yolov7_dir,
     )
     if not ok:
