@@ -26,20 +26,34 @@ def infer_layer_constants_node(state: QDQState) -> dict:
     concat, maxpool, upsample, repconv = [], [], [], []
     sppcspc = None
 
-    # Match top-level Sequential children: exactly 4-space indent + (N): ClassName
-    pattern = re.compile(r'^ {4}\((\d+)\):\s+([\w.]+)', re.MULTILINE)
-    for m in pattern.finditer(model_txt):
+    lines = model_txt.splitlines()
+    # Top-level Sequential children have 6-space indent: "      (N): ClassName"
+    top_pat = re.compile(r'^ {6}\((\d+)\):\s*([\w]+)')
+    wrap_pat = re.compile(r'module_to_wrap\):\s*([\w.]+)')
+
+    for i, line in enumerate(lines):
+        m = top_pat.match(line)
+        if not m:
+            continue
         idx, cls = int(m.group(1)), m.group(2)
-        if re.match(r'Concat', cls):
-            concat.append(idx)
-        elif re.match(r'(?:MaxPool|MP)\b', cls):
+
+        if cls in ('MP', 'MaxPool', 'MaxPool2d'):
             maxpool.append(idx)
-        elif re.match(r'(?:nn\.Upsample|Upsample|UP)\b', cls):
-            upsample.append(idx)
-        elif re.match(r'SPPCSPC', cls, re.IGNORECASE):
+        elif cls.upper().startswith('SPPCSPC') or cls.upper().startswith('SPCSP'):
             sppcspc = idx
-        elif re.match(r'RepConv', cls, re.IGNORECASE):
+        elif cls.startswith('RepConv'):        # RepConvWrapper, RepConv, etc.
             repconv.append(idx)
+        elif cls == 'BaseLayerWrapper':
+            # Look ahead up to 4 lines for module_to_wrap to identify Concat / Upsample
+            for j in range(i + 1, min(i + 5, len(lines))):
+                mw = wrap_pat.search(lines[j])
+                if mw:
+                    inner = mw.group(1)
+                    if inner == 'Concat':
+                        concat.append(idx)
+                    elif 'Upsample' in inner:
+                        upsample.append(idx)
+                    break
 
     constants = {
         "concat": concat,

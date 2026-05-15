@@ -22,7 +22,7 @@ from onnx import helper, TensorProto
 # Defaults — overridden at runtime by CLI args from the agent
 SPPSCSPC_LR_LAYER = 51
 DETECTION_LAYER = 105
-REPCONV_LAYERS = REPCONV_LAYERS
+REPCONV_LAYERS = [102, 103, 104]
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 logger = logging.getLogger(__name__)
