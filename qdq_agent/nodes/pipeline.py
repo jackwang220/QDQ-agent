@@ -285,7 +285,9 @@ def run_step6_node(state: QDQState) -> dict:
 
         model = onnx.load(input_onnx)
 
-        input_bias = cfg["model"].get("input_bias", -0.5)
+        input_bias = state.get("input_bias")
+        if input_bias is None:
+            input_bias = cfg["model"].get("input_bias", -0.5)
         if input_bias != 0.0:
             model = add_input_bias_node(model, bias_value=input_bias)
 

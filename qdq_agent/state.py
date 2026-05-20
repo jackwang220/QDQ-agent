@@ -30,6 +30,9 @@ class QDQState(TypedDict):
     detect_layer: Optional[int]
     model_txt_content: str
 
+    # ── Quantizer mode (inferred from model.txt, confirmed by HITL) ─────────────
+    quantizer_mode: Optional[str]
+
     # ── Layer structure (inferred from model.txt) ─────────────────────────────
     layer_constants: dict  # {concat:[], maxpool:[], upsample:[], sppcspc:int|None, repconv:[]}
 
@@ -40,6 +43,9 @@ class QDQState(TypedDict):
 
     # ── Auto-generated postprocess config ────────────────────────────────────
     postprocess_config: dict          # {transpose_configs, outputs_to_remove, nodes_to_remove, extra_qdq_nodes}
+
+    # ── Confirmed input bias (set by HITL, overrides config) ─────────────────
+    input_bias: Optional[float]
 
     # ── Final ────────────────────────────────────────────────────────────────
     success: bool

@@ -65,7 +65,79 @@ def infer_layer_constants_node(state: QDQState) -> dict:
     print(f"  [Agent] Layer constants: SPPCSPC={sppcspc}, RepConv={repconv}")
     print(f"          Concat={concat}")
     print(f"          MaxPool={maxpool}, Upsample={upsample}")
-    return {"layer_constants": constants, "current_stage": "layer_constants_inferred"}
+
+    # Detect quantizer mode from class names printed in model.txt
+    quant_pat = re.compile(r'\b(DFPQuantizer_ThreeScale_negFL|DFPQuantizer_ThreeScale_Symm'
+                           r'|DFPQuantizer_TwoScale_negFL|DFPQuantizer_TwoScale_Symm'
+                           r'|DFPQuantizer_negFL_stdFL|DFPQuantizer_negFL'
+                           r'|DFPQuantizer_stdFL|DFPQuantizer|FPQuantizer)\b')
+    mode_counts: dict[str, int] = {}
+    for line in lines:
+        m = quant_pat.search(line)
+        if m:
+            mode_counts[m.group(1)] = mode_counts.get(m.group(1), 0) + 1
+    if mode_counts:
+        quantizer_mode = max(mode_counts, key=lambda k: mode_counts[k])
+    else:
+        quantizer_mode = None
+    print(f"  [Agent] Detected quantizer mode: {quantizer_mode}  (counts: {mode_counts})")
+
+    return {
+        "layer_constants": constants,
+        "quantizer_mode": quantizer_mode,
+        "current_stage": "layer_constants_inferred",
+    }
+
+
+# ── review_quantizer_mode ─────────────────────────────────────────────────────
+
+_MODE_INFO = {
+    "DFPQuantizer_TwoScale_negFL":  ("雙 scale，非對稱（正負各一組 FL）", "✅ 完整支援"),
+    "DFPQuantizer_TwoScale_Symm":   ("雙 scale，對稱（只有正 scale）",    "✅ 完整支援"),
+    "DFPQuantizer_negFL":           ("單 scale，非對稱",                  "✅ 完整支援"),
+    "DFPQuantizer_negFL_stdFL":     ("單 scale，非對稱，用 std 算 FL",    "✅ 完整支援"),
+    "DFPQuantizer":                 ("單 scale，用 max 算 FL",             "✅ 完整支援"),
+    "DFPQuantizer_stdFL":           ("單 scale，用 std 算 FL",             "✅ 完整支援"),
+    "DFPQuantizer_ThreeScale_Symm": ("三 scale，對稱",                    "⚠️  Step 1 解析可能不完整，FL 值需人工確認"),
+    "DFPQuantizer_ThreeScale_negFL":("三 scale，非對稱",                  "⚠️  Step 1 解析可能不完整，FL 值需人工確認"),
+    "FPQuantizer":                  ("固定 FL（bias 用）",                 "✅ 完整支援"),
+}
+
+def review_quantizer_mode_node(state: QDQState) -> dict:
+    """HITL: show detected quantizer mode and let user confirm or override."""
+    detected = state.get("quantizer_mode")
+
+    desc, support = _MODE_INFO.get(detected, ("未知", "❓ 請確認 export_model_excel.py 是否支援"))
+
+    lines = [f"偵測到的 quantizer mode：{detected}"]
+    lines.append(f"  說明：{desc}")
+    lines.append(f"  Pipeline 支援狀況：{support}")
+    lines.append("")
+    lines.append("可用的 mode：")
+    for k, (d, s) in _MODE_INFO.items():
+        lines.append(f"  {k}")
+    lines.append("")
+    lines.append("按 Enter 接受，或輸入正確的 mode 名稱覆蓋：")
+
+    human_input: str = interrupt({
+        "type": "quantizer_mode_review",
+        "message": "\n".join(lines),
+        "detected": detected,
+        "support_status": support,
+    })
+
+    inp = (human_input or "").strip()
+    if inp and inp in _MODE_INFO:
+        confirmed = inp
+        print(f"  [HITL] quantizer_mode overridden: {detected} -> {confirmed}")
+    elif inp:
+        print(f"  [HITL] Unknown mode '{inp}', keeping detected: {detected}")
+        confirmed = detected
+    else:
+        confirmed = detected
+        print(f"  [HITL] quantizer_mode accepted = {confirmed}")
+
+    return {"quantizer_mode": confirmed, "current_stage": "quantizer_mode_confirmed"}
 
 
 # ── scan_qdq_coverage ─────────────────────────────────────────────────────────
@@ -211,6 +283,45 @@ def review_qdq_coverage_node(state: QDQState) -> dict:
 
     print(f"  [HITL] Confirmed {len(valid)} extra Q/DQ node(s)")
     return {"suggested_extra_qdq": valid, "current_stage": "qdq_coverage_confirmed"}
+
+
+# ── review_input_bias ─────────────────────────────────────────────────────────
+
+def review_input_bias_node(state: QDQState) -> dict:
+    """HITL: confirm input_bias before Step 6.
+
+    Shows the current value from config and explains what it means.
+    User can press Enter to accept or type a new float to override.
+    """
+    cfg = state["config"]
+    current = cfg["model"].get("input_bias", -0.5)
+
+    human_input: str = interrupt({
+        "type": "input_bias_review",
+        "message": (
+            f"input_bias = {current}\n"
+            "This value is added to model input before inference.\n"
+            "Standard YOLOv7 (input /255 then -0.5) → use -0.5\n"
+            "If training used /255 only (no centering)  → use 0.0\n"
+            "If training used ImageNet normalization    → set manually\n\n"
+            "Press Enter to accept, or type a new float value to override:"
+        ),
+        "current_value": current,
+    })
+
+    inp = (human_input or "").strip()
+    if inp:
+        try:
+            confirmed = float(inp)
+            print(f"  [HITL] input_bias overridden: {current} -> {confirmed}")
+        except ValueError:
+            confirmed = current
+            print(f"  [HITL] Invalid input '{inp}', keeping input_bias = {current}")
+    else:
+        confirmed = current
+        print(f"  [HITL] input_bias accepted = {confirmed}")
+
+    return {"input_bias": confirmed, "current_stage": "input_bias_confirmed"}
 
 
 # ── infer_postprocess ─────────────────────────────────────────────────────────

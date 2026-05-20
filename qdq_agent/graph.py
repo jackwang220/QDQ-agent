@@ -17,6 +17,7 @@ from qdq_agent.nodes.pipeline import (
 from qdq_agent.nodes.agent import (
     load_model_txt_node,
     infer_layer_constants_node,
+    review_quantizer_mode_node,
     infer_detect_layer_node,
     review_detect_layer_node,
     suggest_unknown_fix_node,
@@ -24,6 +25,7 @@ from qdq_agent.nodes.agent import (
     scan_qdq_coverage_node,
     review_qdq_coverage_node,
     infer_postprocess_node,
+    review_input_bias_node,
 )
 
 
@@ -74,6 +76,7 @@ def build_graph() -> StateGraph:
     add("run_step0",             run_step0_node)
     add("load_model_txt",        load_model_txt_node)
     add("infer_layer_constants", infer_layer_constants_node)
+    add("review_quantizer_mode", review_quantizer_mode_node)  # HITL
 
     # ── Step 1 + unknown-node fix loop ────────────────────────────────────────
     add("run_step1",          run_step1_node)
@@ -97,6 +100,9 @@ def build_graph() -> StateGraph:
     add("run_step5",         run_step5_node)
     add("infer_postprocess", infer_postprocess_node)
 
+    # ── Input bias review (HITL) ──────────────────────────────────────────────
+    add("review_input_bias", review_input_bias_node)
+
     # ── Step 6 + terminal ─────────────────────────────────────────────────────
     add("run_step6", run_step6_node)
     add("error",     _error_node)
@@ -112,7 +118,8 @@ def build_graph() -> StateGraph:
         {"continue": "load_model_txt", "error": "error"},
     )
     g.add_edge("load_model_txt",        "infer_layer_constants")
-    g.add_edge("infer_layer_constants", "run_step1")
+    g.add_edge("infer_layer_constants", "review_quantizer_mode")
+    g.add_edge("review_quantizer_mode", "run_step1")
 
     # Step 1 → unknown fix loop or detect layer check
     g.add_conditional_edges(
@@ -158,7 +165,8 @@ def build_graph() -> StateGraph:
         "run_step5", _route_after_step,
         {"continue": "infer_postprocess", "error": "error"},
     )
-    g.add_edge("infer_postprocess", "run_step6")
+    g.add_edge("infer_postprocess",  "review_input_bias")
+    g.add_edge("review_input_bias",  "run_step6")
     g.add_edge("run_step6", END)
     g.add_edge("error",     END)
 

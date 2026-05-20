@@ -124,6 +124,8 @@ def main():
         "suggested_patterns": [],
         "suggested_extra_qdq": [],
         "postprocess_config": {},
+        "quantizer_mode": None,
+        "input_bias": None,
         "success": False,
     }
 
