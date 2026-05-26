@@ -1,0 +1,33 @@
+===== DEMO CHEATSHEET =====
+
+--- 1. SSH 進 server ---
+ssh m314832018@140.113.228.206
+
+
+--- 2. 啟動 Web Panel ---
+conda activate ivs && cd ~/QDQ-agent && python -m qdq_agent.server --host 0.0.0.0 --port 8000
+
+
+--- 3. 瀏覽器開 ---
+http://140.113.228.206:8000
+
+
+--- 4. 如果想背景跑（斷線不停） ---
+tmux new-session -d -s qdq 'conda activate ivs && cd ~/QDQ-agent && python -m qdq_agent.server --host 0.0.0.0 --port 8000'
+
+看 log：
+tmux attach -t qdq
+
+關掉：
+tmux kill-session -t qdq
+
+
+--- 5. 如果 8000 port 被佔用 ---
+pkill -f 'qdq_agent.server'
+
+
+--- 6. 重新跑 pipeline（清除上次結果） ---
+cd ~/QDQ-agent && rm -rf wrap_all_model_onnx_export/
+
+
+===========================

@@ -11,7 +11,14 @@ from qdq_agent.state import QDQState
 
 
 def _run(cmd: list[str], cwd: str | None = None) -> tuple[bool, str, str]:
-    result = subprocess.run(cmd, capture_output=True, text=True, cwd=cwd)
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True, cwd=cwd)
+    except (FileNotFoundError, NotADirectoryError, OSError) as e:
+        msg = str(e)
+        if cwd:
+            msg = f"Cannot run in directory '{cwd}': {e}"
+        print(f"  [FAIL] {msg}")
+        return False, "", msg
     ok = result.returncode == 0
     if not ok:
         print(f"  [FAIL exit={result.returncode}] {' '.join(cmd)}")
@@ -39,6 +46,12 @@ def load_config_node(state: QDQState) -> dict:
         model_txt_path = str(Path(output_dir) / f"{weights_stem}_model.txt")
     else:
         model_txt_path = raw_model_txt
+
+    # Allow server form to override model_txt_path / detect_layer pre-start.
+    if state.get("model_txt_path"):
+        model_txt_path = state["model_txt_path"]
+    if state.get("detect_layer") is not None:
+        detect_layer = state["detect_layer"]
 
     return {
         "config": cfg,
@@ -145,6 +158,19 @@ def run_step2_node(state: QDQState) -> dict:
     img_size = str(cfg["model"]["img_size"])
     output_dir = cfg["paths"]["output_dir"]
     raw_onnx = state["raw_onnx_path"]
+
+    Path(output_dir).mkdir(parents=True, exist_ok=True)
+
+    # If *_sim_annotate.onnx already exists next to the weights, copy and skip.
+    # This avoids the yolov7 repo dependency when the file was pre-generated.
+    existing = list(Path(weights).parent.glob("*_sim_annotate.onnx"))
+    if existing:
+        if not Path(raw_onnx).exists():
+            shutil.copy(existing[0], raw_onnx)
+            print(f"  [Step 2] copied pre-generated ONNX: {existing[0]} -> {raw_onnx}")
+        else:
+            print(f"  [Step 2] raw ONNX already exists, skipping: {raw_onnx}")
+        return {"current_stage": "step2_skipped"}
 
     print(f"  [Step 2] export_quant_fused: {weights}")
     print(f"  cwd: {yolov7_dir}")

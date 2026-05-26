@@ -301,9 +301,9 @@ def review_input_bias_node(state: QDQState) -> dict:
         "message": (
             f"input_bias = {current}\n"
             "This value is added to model input before inference.\n"
-            "Standard YOLOv7 (input /255 then -0.5) → use -0.5\n"
-            "If training used /255 only (no centering)  → use 0.0\n"
-            "If training used ImageNet normalization    → set manually\n\n"
+            "Training used /255 then -0.5 centering → use -0.5\n"
+            "Training used /255 only (no centering)  → use 0.0\n"
+            "Other normalization                     → set manually\n\n"
             "Press Enter to accept, or type a new float value to override:"
         ),
         "current_value": current,

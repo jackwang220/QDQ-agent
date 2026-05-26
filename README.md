@@ -1,110 +1,192 @@
-# QDQ Agent — YOLOv7 量化模型轉換工具
+# QDQ Agent — 量化模型轉換工具
 
-將 QAT（量化感知訓練）訓練好的 YOLOv7 模型自動轉成硬體可部署的量化 ONNX。
+將 QAT（量化感知訓練）訓練好的模型自動轉成硬體可部署的量化 ONNX。
 
 ```
 best.pt + model.txt  →  [QDQ Agent]  →  model_bias_topo.onnx
 ```
 
-> 快速上手版請看 [README_user.md](README_user.md)
-> 原始交接文件請看 [README_qcraft.md](README_qcraft.md)
+> 快速上手看 [README_user.md](README_user.md)
+> 訓練框架說明看 [README_qcraft.md](README_qcraft.md)
 
 ---
 
-## 背景與設計動機
+## 設計動機
 
-原始版本（`QDQ交接/QDQ交接/` 資料夾）是一組獨立的 Python script，需要手動依序執行、手動修改 code 裡的 hardcode layer index，換模型成本高。
+原始版本是一組獨立 script，需要手動依序執行、手動修改 code 裡的 hardcode layer index，換模型成本高。
 
 Agent 版本改為：
 - 所有步驟由 LangGraph agent 自動串接
 - layer index（SPPCSPC、RepConv、Concat 等）從 `model.txt` 自動推斷
 - postprocess 設定（transpose、nodes_to_remove）從 ONNX 自動推斷
-- 換模型只需改 `pipeline_config.yaml` 一個檔案
+- Human-in-the-Loop（HITL）讓使用者在關鍵步驟確認或修正
+- 換模型只需改 `pipeline_config.yaml`
 
 ---
 
-## 需要準備的東西
-
-| 檔案 | 說明 |
-|------|------|
-| `best.pt` | QAT 訓練好的模型 checkpoint |
-| `model.txt` | 訓練時的模型架構與 FL 值，從訓練結果的 `opt_after-best.txt` 複製而來 |
-
-**為什麼需要 `model.txt`**：FL 值（fractional length，決定量化 scale）必須和 `.pt` 訓練時完全一致。雖然可以從 `.pt` 自動生成，但因為 `quant_model_v7_revised.py` 版本差異，自動生成的 FL 值可能不準確，建議優先使用訓練時存下來的版本。
-
----
-
-## Pipeline 各步驟說明
+## Pipeline 架構
 
 ```
-Step 0  generate_model_txt.py          從 .pt 自動生成 model.txt（有 model.txt 則跳過）
-Step 1  export_model_excel.py          解析 model.txt，產出含 FL 值的 Excel
-Step 2  export_quant_fused.py          PyTorch → raw ONNX（unwrap quantizer，weight 還原為整數）
-Step 3  model_fp32_int8.py             ONNX 中的 weight/bias dtype FP32 → INT8
-Step 4  onnx_view_wrap_all_repconv_topo.py   根據 Excel FL 值插入 Q/DQ 節點
-Step 5  implicit_topo.py               處理 implicit 輸出層
-Step 6  modify_model_topo.py           後處理：加 input bias、補缺漏 Q/DQ、加 Transpose、清理多餘節點
+load_config
+    │
+run_step0  (generate_model_txt — 有 model.txt 則跳過)
+    │
+load_model_txt → infer_layer_constants
+    │
+[HITL] review_quantizer_mode
+    │
+run_step1  (export_model_excel)
+    ├─ 有 unknown node → suggest_unknown_fix → [HITL] review_unknown_fix → 回 step1
+    └─ 無 unknown node ─┐
+                        ▼
+              check_detect_layer
+              ├─ 已知 → run_step2
+              └─ 未知 → infer_detect_layer → [HITL] review_detect_layer → run_step2
+                        │
+                   run_step3 → run_step4
+                        │
+              scan_qdq_coverage → [HITL] review_qdq_coverage
+                        │
+                   run_step5 → infer_postprocess
+                        │
+              [HITL] review_input_bias
+                        │
+                   run_step6  (最終輸出)
 ```
-
-Agent 在 Step 1 之前自動推斷 layer index，在 Step 4 之後自動掃描 Q/DQ 覆蓋率，在 Step 5 之後自動推斷 postprocess 設定。有兩個 Human-in-the-Loop 中斷點讓使用者確認 detect layer 與補插的 Q/DQ 節點。
 
 ---
 
-## 環境設定
+## 各步驟說明
 
-**需求**：GPU server（Step 0、2 需要 PyTorch + GPU）
+| Step | Script | 說明 |
+|------|--------|------|
+| 0 | `generate_model_txt.py` | 從 `.pt` 生成 `model.txt`（有則跳過） |
+| 1 | `export_model_excel.py` | 解析 `model.txt`，產出含 FL 值的 Excel |
+| 2 | `export_quant_fused.py` | PyTorch → raw ONNX（有 `*_sim_annotate.onnx` 則跳過） |
+| 3 | `model_fp32_int8.py` | weight/bias dtype FP32 → INT8 |
+| 4 | `onnx_view_wrap_all_repconv_topo.py` | 根據 Excel FL 值插入 Q/DQ 節點 |
+| 5 | `implicit_topo.py` | 處理 implicit 輸出層（IDetect implicit multiply/add） |
+| 6 | `modify_model_topo.py` | 後處理：加 input bias、補缺漏 Q/DQ、加 Transpose、清理多餘節點 |
+
+---
+
+## HITL 中斷點說明
+
+| 中斷點 | 時機 | 說明 |
+|--------|------|------|
+| `quantizer_mode_review` | Step 1 前 | 確認從 model.txt 偵測到的 quantizer 類型（DFPQuantizer 系列） |
+| `unknown_fix_review` | Step 1 後（有 unknown node 時） | LLM 建議的 role_type pattern，需手動套用到 `export_model_excel.py` |
+| `detect_layer_review` | Step 2 前 | 確認 IDetect 層的 layer index |
+| `qdq_coverage_review` | Step 4 後 | 確認缺少 Q/DQ 覆蓋的節點與 FL 值 |
+| `input_bias_review` | Step 6 前 | 確認 input_bias 值（推論前加到 model input） |
+
+---
+
+## 環境需求
+
+- GPU server（Step 0、2 需要 PyTorch + GPU 執行 `export_quant_fused.py`）
+- 若已有 `best_sim_annotate.onnx`，Step 2 自動跳過，不需要 GPU
+- 若已有 `model.txt`，Step 0 自動跳過，不需要 yolov7
 
 ```bash
-# 1. 安裝 pipeline 套件（需要在 GPU server 上）
-pip install -r requirements_qdq.txt
-
-# 2. 安裝 agent 套件
-pip install -r requirements_agent.txt
-
-# 3. 設定 API key
-cp .env.template .env
-# 編輯 .env，填入 ANTHROPIC_API_KEY
+pip install -r requirements_qdq.txt   # pipeline 套件
+pip install -r requirements_agent.txt  # agent + web panel 套件
+cp .env.template .env                  # 填入 ANTHROPIC_API_KEY
 ```
+
+---
+
+## yolov7 框架依賴說明
+
+### 什麼是這個 yolov7
+
+這不是 GitHub 上的公開版 [WongKinYiu/yolov7](https://github.com/WongKinYiu/yolov7)，而是實驗室基於它修改的**內部 fork**，加入了量化相關的模組（`quant_model_v7_revised.py`、`QuantModel`、各種 `DFPQuantizer` 等）。這些模組是 QAT 訓練和 ONNX 轉換的核心，**無法從 pip 安裝，需要使用與訓練時相同的本地 repo**。
+
+### 哪些步驟需要它
+
+| Step | 用途 | 缺少時的行為 |
+|------|------|-------------|
+| Step 0 (`generate_model_txt.py`) | `torch.load(best.pt)` 需要 `QuantModel` 等 class 在 sys.path | 報錯（找不到 class） |
+| Step 2 (`export_quant_fused.py`) | 用 yolov7 的 export 流程輸出 `*_sim_annotate.onnx` | 報錯（import `models` 失敗） |
+
+Step 1、3、4、5、6 **完全不需要** yolov7。
+
+### 技術細節
+
+pipeline 在執行這兩個 step 時，會把 `yolov7_dir` 設為 `cwd` 並加入 `sys.path`，讓 `import models` 能正確解析到 yolov7 目錄下的模組：
+
+```python
+# nodes/pipeline.py 的做法
+yolov7_abs = str(Path(yolov7_dir).resolve())
+subprocess.run([sys.executable, script, ...], cwd=yolov7_abs)
+```
+
+### 跳過條件（不需要 yolov7 的情況）
+
+```
+有 model.txt          → Step 0 自動跳過，不需要 yolov7
+有 *_sim_annotate.onnx → Step 2 自動跳過，不需要 yolov7
+兩者都有              → 完全不碰 yolov7
+```
+
+若 server 上已有 `best_sim_annotate.onnx` 和 `model.txt`，正常使用時 Step 0、2 都會跳過，完全不需要 yolov7。換到新環境時才需要重新準備。
 
 ---
 
 ## 設定檔 pipeline_config.yaml
 
-換模型只需要改以下欄位，其餘不動：
-
 ```yaml
 model:
   weights: "./best.pt"      # QAT 訓練好的 .pt 路徑
   img_size: 640             # 模型輸入大小
-  detect_layer: null        # IDetect layer index；null 讓 agent 自動推斷
-  input_bias: -0.5          # 輸入偏移，DLA 硬體用 -0.5，不需要則設 0.0
+  detect_layer: null        # IDetect layer index；null = agent 自動推斷
+  input_bias: -0.5          # 訓練時有做 /255 再 -0.5 平移 → -0.5；只做 /255 → 0.0
 
 paths:
-  yolov7_dir: "/path/to/yolov7"   # YOLOv7 repo root
-  model_txt: "auto"               # 有 model.txt 就填路徑；沒有填 "auto" 自動生成
+  code_dir: "./code"
+  yolov7_dir: "/path/to/yolov7"
+  model_txt: "./model.txt"  # "auto" = 從 weights 自動生成
   output_dir: "./wrap_all_model_onnx_export"
-```
+  excel_output: "./model_fl_values_fixed.xlsx"
 
-`postprocess` 區塊（extra_qdq_nodes、transpose_configs、nodes_to_remove 等）**不需要預先填寫**，agent 會在執行時自動推斷並透過 HITL 讓你確認。
+intermediate:               # 中間檔名，通常不用改
+  raw_onnx: "wrap_all_best_temp.onnx"
+  int8_onnx: "int8_converted_model.onnx"
+  qdq_onnx: "wrap_all_temp.onnx"
+  implicit_onnx: "output_topo.onnx"
+  final_onnx: "model_bias_topo.onnx"
+
+postprocess:                # 不用預先填，agent 自動推斷並透過 HITL 確認
+  extra_qdq_nodes: []
+  transpose_configs: []
+  outputs_to_remove: []
+  nodes_to_remove: []
+```
 
 ---
 
-## 執行
+## 啟動方式
+
+### Web Panel
 
 ```bash
-cd ~/QDQ-agent
-python -m qdq_agent.main --config pipeline_config.yaml
-
-# 指定 thread id（重跑時避免 checkpoint 衝突）
-python -m qdq_agent.main --config pipeline_config.yaml --thread-id my_run_02
+python -m qdq_agent.server --host 0.0.0.0 --port 8000
 ```
 
-執行過程會有兩個需要按 Enter 確認的中斷點：
+瀏覽器開 `http://<server-ip>:8000`。
 
-1. **detect_layer 確認**：agent 推斷出 IDetect layer index，確認或輸入其他數字
-2. **Q/DQ 覆蓋率確認**：列出缺少 Q/DQ 的節點與推斷的 FL 值，確認或逐一覆蓋
+從外部 SSH 連進 server 時，可用 port forwarding 在本機開：
+```bash
+ssh -L 8000:localhost:8000 user@your-server
+# 然後開 http://localhost:8000
+```
 
-正常情況直接按 Enter 接受即可，全程約 15–30 秒。
+### CLI
+
+```bash
+python -m qdq_agent.main --config pipeline_config.yaml
+python -m qdq_agent.main --config pipeline_config.yaml --thread-id run_02
+```
 
 ---
 
@@ -112,66 +194,64 @@ python -m qdq_agent.main --config pipeline_config.yaml --thread-id my_run_02
 
 ```
 wrap_all_model_onnx_export/
-├── wrap_all_best_temp.onnx    Step 2 輸出，raw ONNX
-├── int8_converted_model.onnx  Step 3 輸出，weight dtype 轉 INT8
-├── wrap_all_temp.onnx         Step 4 輸出，插入 Q/DQ 後
-├── output_topo.onnx           Step 5 輸出，處理 implicit 後
-└── model_bias_topo.onnx       ★ 最終結果，給硬體部署用
+├── wrap_all_best_temp.onnx    Step 2 raw ONNX
+├── int8_converted_model.onnx  Step 3 weight dtype 轉 INT8
+├── wrap_all_temp.onnx         Step 4 插入 Q/DQ
+├── output_topo.onnx           Step 5 處理 implicit 輸出層
+└── model_bias_topo.onnx       ★ 最終結果
 ```
 
 ---
 
-## 如何取得正確的 model.txt
+## 專案結構
 
-訓練 script `train_quant_v7.py` 訓練完成後，會在 `runs/train/expXX/opt_after-best.txt` 存下 `str(model)` 的內容。將這份檔案複製並改名為 `model.txt` 即可。
-
-```bash
-cp runs/train/expXX/opt_after-best.txt ~/QDQ-agent/model.txt
+```
+QDQ-agent/
+├── pipeline_config.yaml       設定檔
+├── code/                      各步驟 script（原始交接版本）
+│   ├── generate_model_txt.py
+│   ├── export_model_excel.py
+│   ├── export_quant_fused.py
+│   ├── model_fp32_int8.py
+│   ├── onnx_view_wrap_all_repconv_topo.py
+│   ├── implicit_topo.py
+│   └── modify_model_topo.py
+├── qdq_agent/
+│   ├── graph.py               LangGraph 圖定義（節點與邊）
+│   ├── state.py               QDQState TypedDict
+│   ├── llm.py                 LLM client + tracing
+│   ├── main.py                CLI 入口
+│   ├── nodes/
+│   │   ├── pipeline.py        各 step 的執行節點
+│   │   └── agent.py           LLM 推斷 + HITL 中斷節點
+│   ├── prompts/               LLM prompt 模板
+│   └── server/                Web Panel（FastAPI + WebSocket）
+│       ├── app.py
+│       ├── panel.py           前端 HTML（vanilla JS，no framework）
+│       ├── session.py         pipeline thread ↔ asyncio bridge
+│       └── __main__.py
+├── requirements_qdq.txt
+└── requirements_agent.txt
 ```
 
-如果想讓訓練 script 自動存到固定位置，可在 `train_quant_v7.py` 的 `line 623` 後加：
+---
 
-```python
-with open(wdir / "model.txt", "w") as f:
-    f.write(str(model))
-```
+## 移植到新模型的注意事項
 
-這樣 `weights/best.pt` 和 `weights/model.txt` 就會自動成對存在。
+換一個架構不同的模型時需要留意：
+
+1. **layer index 推斷失敗**：agent 用 regex 從 `model.txt` 推斷，若模型類型不同（非 YOLOv7 系列）可能推錯，HITL 時要仔細確認
+2. **unknown role_type**：Step 1 Excel 出現 `Unknown` 時，表示 `export_model_excel.py` 的 path 規則沒有覆蓋到新的層類型，需手動在該 script 裡新增對應條件
+3. **新的 wrapper 類型**：若 `quant_model_v7_revised.py` 有新增 wrapper，`export_model_excel.py` 和 `onnx_view_wrap_all_repconv_topo.py` 的 node_type 對應表也要同步更新
+4. **輸出層結構不同**：Step 6 的 transpose 和 nodes_to_remove 由 agent 自動推斷，若偵測層結構異常需手動確認
 
 ---
 
-## 各 script 功能說明
+## 環境建議
 
-| 檔案 | 對應步驟 | 說明 |
-|------|----------|------|
-| `code/generate_model_txt.py` | Step 0 | 從 `.pt` 生成 `model.txt` |
-| `code/export_model_excel.py` | Step 1 | 解析 `model.txt` 產出 FL 值 Excel；支援 `--concat-layers`、`--maxpool-layers`、`--upsample-layers` 覆蓋預設 |
-| `code/export_quant_fused.py` | Step 2 | PyTorch → ONNX，weight 輸出整數值 |
-| `code/model_fp32_int8.py` | Step 3 | ONNX weight dtype FP32 → INT8 |
-| `code/onnx_view_wrap_all_repconv_topo.py` | Step 4 | 插入 Q/DQ 節點；支援 `--sppcspc-layer`、`--repconv-layers`、`--detection-layer` 覆蓋預設 |
-| `code/implicit_topo.py` | Step 5 | 處理 implicit 輸出層 |
-| `code/modify_model_topo.py` | Step 6 | 後處理（bias、補 Q/DQ、Transpose、清理節點） |
-| `qdq_agent/` | 全程 | LangGraph agent，自動推斷參數並串接所有步驟 |
-
----
-
-## 新模型支援注意事項
-
-換一個結構不同的模型時，agent 的自動推斷可能不完整，需要留意：
-
-1. **layer index 推斷失敗**：agent 從 `model.txt` 用 regex 推斷，若模型結構差異大可能推錯，HITL 時要仔細確認
-2. **unknown role_type**：Step 1 產出的 Excel 中若出現 `role_type = unknown` 的節點，表示 `onnx_view_wrap_all_repconv_topo.py` 裡沒有對應的字串處理邏輯，需要手動補上
-3. **新的 wrapper 類型**：若 `quant_model_v7_revised.py` 有新增 wrapper，`export_model_excel.py` 和 `onnx_view_wrap_all_repconv_topo.py` 裡的 node_type 對應表也要跟著補
-4. **輸出層結構不同**：Step 6 的 transpose 和 nodes_to_remove 由 agent 自動推斷，但若偵測層結構異常，需要手動確認輸出點名稱
-
----
-
-## Server 資訊（實驗室）
-
-| 項目 | 值 |
-|------|-----|
-| IP | 140.113.228.206 |
-| 帳號 | m314832018 |
-| yolov7 路徑 | `/home1/m314832018/yolov7` |
-| QDQ-agent 路徑 | `~/QDQ-agent` |
-| Python 環境 | `~/miniforge3/envs/ivs` |
+| 項目 | 說明 |
+|------|------|
+| Python | 3.10 以上 |
+| CUDA | Step 0、2 需要 GPU；其餘步驟 CPU 即可 |
+| yolov7 路徑 | 本地 repo 根目錄，填入 `pipeline_config.yaml` 的 `yolov7_dir` |
+| conda 環境 | 建議用獨立環境，避免套件衝突 |

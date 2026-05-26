@@ -10,7 +10,7 @@ model:
 paths:
   code_dir: "./code"
   yolov7_dir: "/path/to/yolov7"   # YOLOv7 repo root (needed for Step 2 and Step 0)
-  model_txt: "auto"               # "auto" = 從 weights 自動生成；或指定絕對/相對路徑
+  model_txt: "./model.txt"         # "auto" = 從 weights 自動生成；或指定絕對/相對路徑
   output_dir: "./wrap_all_model_onnx_export"
   excel_output: "./model_fl_values_fixed.xlsx"
 
