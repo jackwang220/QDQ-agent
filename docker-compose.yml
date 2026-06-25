@@ -1,0 +1,31 @@
+# QDQ Agent — air-gapped 部署用。
+# 用法（在 server 上）:
+#   docker load -i qdq-agent-offline.tar.gz      # 先把 image 載進來
+#   docker compose up                            # 再啟動
+#
+# 換模型時：改下面的 volume 來源路徑或直接覆蓋 best.pt / model.txt，不用重建 image。
+
+services:
+  qdq-agent:
+    image: qdq-agent:offline
+    container_name: qdq-agent
+    ports:
+      - "8000:8000"          # 瀏覽器開 http://<server-ip>:8000 （不是 localhost！見 DEPLOY_DOCKER.md）
+    # Linux server 上 host.docker.internal 預設不解析；加這行才能讓容器連到 host 上的服務
+    # （例如 host 上自架的 Langfuse）。LLM 我們用明確 IP，本來就不靠這個，但留著當保險。
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file:
+      - ./.env               # LLM(內網) 等設定；langfuse 留空以關閉雲端 tracing
+    volumes:
+      # ── 每次換模型會變動的輸入（掛進去，不烤進 image）──
+      - ./best.pt:/app/best.pt:ro
+      - ./model.txt:/app/model.txt:ro
+      - ./pipeline_config.yaml:/app/pipeline_config.yaml:ro
+      # ── yolov7 repo（Step 2 export 的硬依賴，import models 用）──
+      - ./yolov7:/app/yolov7:ro
+      # ── 輸出（最終 ONNX 會寫在這）──
+      - ./wrap_all_model_onnx_export:/app/wrap_all_model_onnx_export
+    restart: unless-stopped
+    # 純 CPU，不需要 GPU。要跑 CLI 而非 web panel 的話：
+    # command: ["python", "-m", "qdq_agent.main", "--config", "pipeline_config.yaml"]

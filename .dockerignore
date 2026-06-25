@@ -1,0 +1,21 @@
+# 別把這些烤進 image（縮小體積、避免洩漏）
+.git
+.venv
+__pycache__
+**/__pycache__
+*.pyc
+.env
+.env.*
+*.zip
+QDQ交接
+QDQ交接.zip
+wrap_all_model_onnx_export
+*.onnx
+best.pt
+model.txt
+*.xlsx
+*.log
+*.tar
+*.tar.gz
+docker-image*.tar*
+wheels
