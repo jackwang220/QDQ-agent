@@ -1,37 +1,35 @@
 # QDQ Agent — CPU-only, self-contained image for air-gapped deployment.
-# 只包 QDQ 轉檔 agent（非 QAT 訓練）。所有套件烤進 image，部署端無需連外網。
+# 依賴用 uv 從 requirements.lock 完整鎖定版本（可重現）。
+# yolov7 (Step 0/2) 的執行期依賴 (opencv/scipy/seaborn/matplotlib…) 一併裝入；
+# yolov7 本體仍以 volume 掛入 /app/yolov7。
 #
-# 注意：build 必須在「有網路」的機器上做（pip/apt 在這裡抓好並烤進 image）。
-#       做完用 build_offline.sh 產生 .tar 搬到 air-gapped server 用 docker load。
+# build 需在有網路的機器；做完 build_offline.sh 產生 tar 搬到 air-gapped server。
 
-# 釘死 amd64：這樣即使在 arm64 Mac 上 build，產出的也是 server(x86_64) 能跑的 image
-# （參考 rust-translator 的 Dockerfile 同樣這樣釘）
 FROM --platform=linux/amd64 python:3.11-slim
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=1
 
-# onnxruntime / torch 需要 OpenMP runtime；build 時抓，烤進 image
+# libgomp1: torch / onnxruntime 的 OpenMP runtime
+# libglib2.0-0: opencv-python-headless 在 slim 需要
 RUN apt-get update \
- && apt-get install -y --no-install-recommends libgomp1 \
+ && apt-get install -y --no-install-recommends libgomp1 libglib2.0-0 \
  && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# 1) 先裝 CPU 版 torch（強制走 PyTorch CPU index，避免抓到上 GB 的 CUDA build）
-RUN pip install --no-cache-dir torch torchvision \
-        --index-url https://download.pytorch.org/whl/cpu
+# 用 uv 安裝完整鎖定的依賴（含 CPU torch 與 yolov7 執行期依賴）
+RUN pip install --no-cache-dir uv
+COPY requirements.lock .
+RUN uv pip install --system --no-cache -r requirements.lock \
+      --extra-index-url https://download.pytorch.org/whl/cpu \
+      --index-strategy unsafe-best-match
 
-# 2) 其餘依賴（torch 已滿足，不會被重裝）
-COPY requirements_agent.txt requirements_qdq.txt ./
-RUN pip install --no-cache-dir -r requirements_agent.txt -r requirements_qdq.txt
-
-# 3) 程式碼（會變動的 best.pt / model.txt / config / yolov7 用 volume 掛，不烤進來）
+# 程式碼（best.pt / model.txt / pipeline_config.yaml / yolov7 用 volume 掛）
 COPY qdq_agent ./qdq_agent
 COPY code ./code
 
 EXPOSE 8000
 
-# 預設啟動 web panel；要跑純 CLI 可在 docker run 後面覆寫 command
 CMD ["python", "-m", "qdq_agent.server", "--host", "0.0.0.0", "--port", "8000"]

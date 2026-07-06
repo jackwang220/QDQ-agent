@@ -1,0 +1,34 @@
+# QDQ Agent 依賴來源。改這裡後用 uv 重新 compile：
+#   uv pip compile requirements.in --extra-index-url https://download.pytorch.org/whl/cpu \
+#       --index-strategy unsafe-best-match -o requirements.lock
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+# CPU torch，pin < 2.6（避開 torch.load weights_only 預設改動）
+torch==2.0.1+cpu
+torchvision==0.15.2+cpu
+numpy==1.26.4
+
+# QDQ agent
+langgraph
+langfuse
+openai
+python-dotenv
+fastapi
+uvicorn
+PyYAML==6.0.2
+
+# QDQ pipeline (ONNX)
+onnx==1.21.0
+onnxruntime==1.23.2
+onnxsim==0.6.3
+pandas==2.3.3
+openpyxl==3.1.5
+
+# yolov7 執行期依賴 (Step 0/2)
+opencv-python-headless
+Pillow==11.3.0
+scipy==1.15.3
+seaborn==0.13.2
+matplotlib==3.10.7
+requests==2.32.5
+tqdm==4.67.1
